@@ -8,18 +8,14 @@ end
 
 %% Simple Two Way Relay Channel BPSK
 %Parameter setting & initialization
-M=4;
+M=2;
 Ns=10000;
 Niter=1;
-
-for hi=2:2:12
-%h=exp(1i*pi/hi);
 h=1;
 SNR2=0:2:16;
 PerrA=zeros(size(SNR2));
 PerrB=zeros(size(SNR2));
 PerrRatio=zeros(size(SNR2));
-
 
 for SNRi=1:length(SNR2)
     %Niter=Niter+Niter;    
@@ -30,20 +26,19 @@ for SNRi=1:length(SNR2)
         %% Source
         %Source A
         dA=randi([0,M-1], Ns,1);
-        sA=exp(dA.*1i*2*pi/M-1i*pi/M);
+        sA=exp(dA.*1i*2*pi/M);
         %Source B
         dB=randi([0,M-1], Ns,1);       
-        sB=exp(dB.*1i*2*pi/M-1i*pi/M);
+        sB=exp(dB.*1i*2*pi/M);
 
         %% MAC Phase
         xAB=sA+h.*sB; 
         xAB=addnoise(xAB, SNR2(SNRi));
 
-        %% Relay Processing
-        v=zeros(size(xAB));
+        %% Relay Processing       
         %HNC-map
-        v(abs(xAB)<1)=1;
-        v=exp(v.*1i*2*pi/M-1i*pi/M);
+        v=hncMap(xAB,M);
+        v=exp(v.*1i*2*pi/M);
 
         %% BC Phase
         z=v;
@@ -75,9 +70,7 @@ end
 %% Plot
 semilogy(SNR1,Perr);hold on;
 semilogy(SNR2, PerrA,'-*');
-%semilogy(SNR2, PerrB, '-.bo');
-
-end
+semilogy(SNR2, PerrB, '-.bo');
 hold off;grid;
 xlabel('SNR [dB]');
 ylabel('BER');

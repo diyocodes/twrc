@@ -64,7 +64,7 @@ for SNRi=1:length(SNR2)
     PerrB(SNRi)=errB/(Ns*Niter);
     
     PerrRatio(SNRi)=PerrB(SNRi)/Perr(SNR1==SNR2(SNRi));
-    %fprintf('SNR=%.1fdB\n',SNR2(SNRi));
+    fprintf('SNR = %.1fdB\n',SNR2(SNRi));
 end
 
 %% Plot

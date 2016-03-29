@@ -1,12 +1,15 @@
-%%
+%% test without relay
 M=4;
-Ns=100;
+Ns=10;
 dA=randi([0,M-1], Ns,1);
-sA=exp(1i*2*pi*(dA-1)/M);
+%dA=0:M-1;
+sA=mpskMod(dA, M);
 dB=randi([0,M-1], Ns,1);
-sB=exp(1i*2*pi*(dB-1)/M);
-xAB = sA+sB;
-%scatterplot(xAB);
+%dB=0:M-1;
+sB=mpskMod(dB, M);
+%xAB = sA+sB;
+
 %%
-sA=addnoise(sA, 10);
-de=floor((angle(sA))/(pi/M));
+%sA=addnoise(sA, 10, 'complex');
+%scatterplot(xAB);
+de=mpskDemod(sA,M);
